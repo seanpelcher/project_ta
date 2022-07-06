@@ -1,6 +1,7 @@
-#include "LSM6DS3.h"                  //Library
-#include "Wire.h"                     //Library
-#include "mic.h"                      //Library
+//Libraries
+#include "LSM6DS3.h"
+#include "Wire.h"
+#include "mic.h"
 
 // Settings
 #define DEBUG 1                       // Enable pin pulse during ISR
@@ -9,6 +10,7 @@
 //Create a instance of class LSM6DS3
 LSM6DS3 myIMU(I2C_MODE, 0x6A);        //I2C device address 0x6A
 
+//Microphone Configuration
 mic_config_t mic_config{
   .channel_cnt = 1,
   .sampling_rate = 16000,
@@ -16,6 +18,7 @@ mic_config_t mic_config{
   //.debug_pin = LED_BUILTIN          //THIS ACTIVATES THE LED LIGHT
 };
 
+//Create an instance of class NRF52840
 NRF52840_ADC_Class Mic(&mic_config);
 
 int16_t recording_buf[SAMPLES];
@@ -31,17 +34,13 @@ void setup() {
 
   if (!Mic.begin()) {
     Serial.println("Mic initialization failed");
-    while (1);
-  }
-  
- if (myIMU.begin() != 0) {
-        Serial.println("Device error");
-    } 
+    while (1); }
     
- else {
-        Serial.println("Device OK!");
-        Serial.println("Mic initialization done.");
-    }
+ if (myIMU.begin() != 0) {
+        Serial.println("Device error"); } 
+    
+ else { Serial.println("Device OK!");
+        Serial.println("Mic initialization done."); }
 }
 
 void loop() {
@@ -107,5 +106,4 @@ static void audio_rec_callback(uint16_t *buf, uint32_t buf_len) {
      }
     }
   }
-
 }
