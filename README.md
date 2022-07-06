@@ -4,4 +4,4 @@
 - Fixed LED always being on when viewing serial plotter
 - Microphone readings can now be displayed alongside IMU readings
 - Added the option for a delay between data measurements
-- Created second, experimental code aiming to tackle serial plotter issues
+- Created secondary, experimental code aiming to tackle serial plotter issues
