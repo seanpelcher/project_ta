@@ -15,7 +15,7 @@ mic_config_t mic_config{
   .channel_cnt = 1,
   .sampling_rate = 16000,
   .buf_size = 1600,
-  //.debug_pin = LED_BUILTIN          //THIS ACTIVATES THE LED LIGHT
+  //.debug_pin = LED_BUILTIN          // THIS ACTIVATES THE LED LIGHT
 };
 
 //Create an instance of class NRF52840
