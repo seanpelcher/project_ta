@@ -51,10 +51,10 @@ void loop() {
   //int16_t sample = filter.step(recording_buf[i]);
   int16_t sample = recording_buf[i];
 
-  //Microphone (Blue)    // In order for Edge Impulse to properly work, the output must be in the form "x,y", hence the code needed to be reworked to remove all unnecessary text.
-  Serial.print(sample);  // The difference between Serial.print (here) and Serial.println (under thermometer) is that println moves the next print to a new line while the former does not
-  Serial.print(",");     // So you would only use print until you reach your last variable, then use println so that the next reading appears on a fresh line
-
+  //Microphone (Blue)    // For Edge Impulse to work, the output must be in the form "x,y", hence all unnecessary text was removed...
+  Serial.print(sample);  // The difference between Serial.print and Serial.println is that println moves the next print to a new line...
+  Serial.print(",");     // So you would use print until you reach your last variable, then use println so that the next reading appears on a fresh line...
+  
   //Thermometer (Green)
   Serial.println(myIMU.readTempF(), 4); // Hence why I use println here... (by the way, the 4 indicates the number of decimal places of the reading)
 
