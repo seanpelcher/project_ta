@@ -8,3 +8,10 @@
 
 7/18/2022 Notes:
 - Decreased delay between samples to increase sampling frequency (to 6.25 Hz from 4 Hz)
+
+In order to change the sampling frequency within Edge Impulse, the following command may need to be inputted into the terminal:
+```
+edge-impulse-data-forwarder --frequency 1
+```
+where the "1" represents the desired frequency in Hz.
+
