@@ -5,3 +5,6 @@
 - Fixed issue with LED remaining permanently on after viewing the serial plotter
 - Added the option for a delay between data measurements
 - Created secondary, experimental code aiming to tackle serial plotter issues
+
+7/18/2022 Notes:
+- Decreased delay between samples to increase sampling frequency
