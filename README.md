@@ -7,4 +7,4 @@
 - Created secondary, experimental code aiming to tackle serial plotter issues
 
 7/18/2022 Notes:
-- Decreased delay between samples to increase sampling frequency
+- Decreased delay between samples to increase sampling frequency (to 6.25 Hz from 4 Hz)
