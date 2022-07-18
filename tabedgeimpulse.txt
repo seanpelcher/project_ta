@@ -10,7 +10,7 @@
 //Create a instance of class LSM6DS3
 LSM6DS3 myIMU(I2C_MODE, 0x6A);
 
-//Microphone Configuration
+// Microphone Configuration
 mic_config_t mic_config{
   .channel_cnt = 1,
   .sampling_rate = 16000,
