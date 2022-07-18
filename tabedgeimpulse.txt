@@ -58,7 +58,7 @@ void loop() {
   //Thermometer (Green)
   Serial.println(myIMU.readTempF(), 4); // Hence why I use println here... (by the way, the 4 indicates the number of decimal places of the reading)
 
-    delay(250);
+    delay(160);
   }
 
   record_ready = false;
