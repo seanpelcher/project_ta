@@ -1,8 +1,8 @@
 # project_ta
 
-7/6/2022 Notes:
-Created the project_ta repository!
-
+7/6/2022 Notes: <br />
+Created the project_ta repository!<br />
+<br />
 7/7/2022 Notes:
 Microphone readings are now displayed alongside IMU readings
 Fixed issue with LED remaining permanently on after viewing the serial plotter
