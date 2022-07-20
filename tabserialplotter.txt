@@ -55,7 +55,7 @@ void loop() {
   int16_t sample = recording_buf[i];
 
   //Microphone (Blue)
-  Serial.print(sample);
+  Serial.print(sample); //Serial.print(20*log10(abs(sample)/32767)); //Second command may be useful for displaying dBFS instead of PCM
   Serial.print(",");
   
    //Accelerometer (Red)
