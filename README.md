@@ -5,7 +5,7 @@
 - Fixed issue with LED remaining permanently on after viewing the serial plotter
 - Added the option for a delay between data measurements
 - Created secondary, experimental code aiming to tackle serial plotter issues
- <br />
+
 7/18/2022 Notes:
 - Decreased delay between samples to increase sampling frequency (to 6.25 Hz from 4 Hz)
 
@@ -14,7 +14,7 @@ In order to change the sampling frequency within Edge Impulse, the following com
 edge-impulse-data-forwarder --frequency 1
 ```
 where the "1" represents the desired frequency in Hz.
- <br />
+
 7/20/2022 Notes:
 - Added a basic FFT code found [here](https://1littleendian.medium.com/the-late-night-tinkering-projects-10-fun-with-fourier-a72b358229b3) to the repository
 
