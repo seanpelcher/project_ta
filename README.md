@@ -1,4 +1,5 @@
 # project_ta
+
 7/6/2022 Notes:
 - Created the project_ta repository! <br />
 7/7/2022 Notes:
