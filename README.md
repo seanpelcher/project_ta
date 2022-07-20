@@ -2,10 +2,13 @@
 
 7/6/2022 Notes: <br />
 Created the project_ta repository!<br />
+We are working with the Seeed XIAO BLE Sense nRF52840 board. <br />
+Utilizing two unique sample codes, we are able to gather IMU and microphone readings, but not simultaneously. <br />
+Basic information about getting started with the Seeed XIAO BLE Sense nRF52840 board, includimng the sample codes used to obtain the IMU and microphone readings, can be found [here](https://github.com/kevinwlu/iot/tree/master/lesson6/xiao). <br />
 <br />
-7/7/2022 Notes:
-Microphone readings are now displayed alongside IMU readings
-Fixed issue with LED remaining permanently on after viewing the serial plotter
+7/7/2022 Notes: <br />
+Microphone readings are now displayed alongside IMU readings. <br />
+Fixed issue with LED remaining permanently on after viewing the serial plotter. <br />
 Added the option for a delay between data measurements
 Created secondary, experimental code aiming to tackle serial plotter issues
 
