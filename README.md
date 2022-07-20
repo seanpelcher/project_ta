@@ -20,5 +20,5 @@ where the "1" represents the desired frequency in Hz.
 
 This code can run on the Seeed XIAO BLE Sense nRF52840 board, but requires two additional libraries. <br />
 The download for the first library, the arduinoFFT library, can be found [here](https://www.arduino.cc/reference/en/libraries/arduinofft/). <br />
-To utilize the second library, the PDM library, simply download the .zip file from the repository and add it into your Arduino IDE.
+The download for the second library, the PDM library, can be found as a .zip file in the project_ta repository.
 
