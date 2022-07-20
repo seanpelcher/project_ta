@@ -16,7 +16,7 @@ edge-impulse-data-forwarder --frequency 1
 where the "1" represents the desired frequency in Hz.
 
 7/20/2022 Notes:
-- Added an FFT code, which can run successfully on XIAO BLE Sense after downloading the PDM library
+- Added an FFT code I found [here](https://1littleendian.medium.com/the-late-night-tinkering-projects-10-fun-with-fourier-a72b358229b3), which can run successfully on XIAO BLE Sense after downloading the PDM library
 
 To utilize the PDM library, simply download the .zip file from the repository and add it into your Arduino IDE
 
