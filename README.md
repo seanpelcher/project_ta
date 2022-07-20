@@ -15,3 +15,6 @@ edge-impulse-data-forwarder --frequency 1
 ```
 where the "1" represents the desired frequency in Hz.
 
+7/20/2022 Notes:
+- Added an FFT code, which can run successfully on XIAO BLE Sense after downloading the PDM library (can be found in repository)
+
