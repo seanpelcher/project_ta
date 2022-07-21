@@ -26,5 +26,8 @@ Added a basic FFT code (found [here](https://1littleendian.medium.com/the-late-n
 <br />
 This code can run on the Seeed XIAO BLE Sense nRF52840 board, but requires two additional libraries. <br />
 The download for the first library, the arduinoFFT library, can be found [here](https://www.arduino.cc/reference/en/libraries/arduinofft/). <br />
-The download for the second library, the PDM library, can be found as a .zip file in the project_ta repository.
+The download for the second library, the PDM library, can be found as a .zip file in the project_ta repository. <br />
+<br />
+7/21/2022 Notes: <br />
+Fixed an issue with the LED light blinking on and off during the running of the funwithfourier.ino code.
 
