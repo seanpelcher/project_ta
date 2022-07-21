@@ -22,7 +22,7 @@ edge-impulse-data-forwarder --frequency 1
 where the "1" represents the desired frequency in Hz. <br />
 <br />
 7/20/2022 Notes: <br />
-Added a basic FFT code (found [here](https://1littleendian.medium.com/the-late-night-tinkering-projects-10-fun-with-fourier-a72b358229b3)) to the repository. <br/>
+Added a basic FFT code (found [here](https://1littleendian.medium.com/the-late-night-tinkering-projects-10-fun-with-fourier-a72b358229b3)) to the repository, under funwithfourier.ino. <br/>
 <br />
 This code can run on the Seeed XIAO BLE Sense nRF52840 board, but requires two additional libraries. <br />
 The download for the first library, the arduinoFFT library, can be found [here](https://www.arduino.cc/reference/en/libraries/arduinofft/). <br />
