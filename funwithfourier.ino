@@ -79,12 +79,6 @@ void loop() {
     
     Serial.println(peak);
     
-    if (peak <=600)
-      lightOne();
-    if (peak >600 && peak < 1200)
-      lightTwo();
-    if (peak >= 1200)
-      lightThree();
     samplesRead = 0;
    
   }
