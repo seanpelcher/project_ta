@@ -32,5 +32,5 @@ The download for the second library, the PDM library, can be found as a .zip fil
 Fixed an issue with the LED light blinking on and off during the running of the funwithfourier.ino code. <br />
 <br />
 7/25/2022 Notes: <br />
-Updated funwithfourier.ino to include detailed descriptions for most lines of code.
-
+Updated funwithfourier.ino to include detailed descriptions for most lines of code. <br />
+Added a basic bluetooth code to the repository, under tabluetooth.ino. <br />
