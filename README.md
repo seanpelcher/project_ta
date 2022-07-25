@@ -25,9 +25,12 @@ where the "1" represents the desired frequency in Hz. <br />
 Added a basic FFT code (found [here](https://1littleendian.medium.com/the-late-night-tinkering-projects-10-fun-with-fourier-a72b358229b3)) to the repository, under funwithfourier.ino. <br/>
 <br />
 This code can run on the Seeed XIAO BLE Sense nRF52840 board, but requires two additional libraries. <br />
-The download for the first library, the arduinoFFT library, can be found [here](https://www.arduino.cc/reference/en/libraries/arduinofft/). <br />
-The download for the second library, the PDM library, can be found as a .zip file in the project_ta repository. <br />
+The download for the first library, the arduinoFFT library, can be found [here](https://www.arduino.cc/reference/en/libraries/arduinofft/), and the documentation under the README [here](https://github.com/kosme/arduinoFFT). <br />
+The download for the second library, the PDM library, can be found as a .zip file in the project_ta repository, and the documentation [here](https://docs.arduino.cc/learn/built-in-libraries/pdm). <br />
 <br />
 7/21/2022 Notes: <br />
-Fixed an issue with the LED light blinking on and off during the running of the funwithfourier.ino code.
+Fixed an issue with the LED light blinking on and off during the running of the funwithfourier.ino code. <br />
+<br />
+7/25/2022 Notes: <br />
+Updated funwithfourier.ino to include detailed descriptions for most lines of code.
 
