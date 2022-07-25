@@ -28,7 +28,7 @@ void setup() {                   //Beginning of setup code
   PDM.onReceive(onPDMdata);                     //callback (onPDMdata): function that is called when new PDM data is ready to be read, returns nothing
   PDM.setBufferSize(SAMPLES);                   //size (SAMPLES): buffer size to use in bytes, returns nothing
   //PDM.setGain(0);                             //gain (0): gain value to use, 0 - 255, defaults to 20 if not specified, returns nothing
-  // setup the I2S audio input for the sample rate with 32-bits per sample
+                                             //setup the I2S audio input for the sample rate with 32-bits per sample
   if (!PDM.begin(1, 16000)) {                   //channels (1): the number of channels, 1 for mono, 2 for stereo, sampleRate (16000): the sample rate to use in Hz
     Serial.println("Failed to start PDM!");     //Prints an error message 
     while (1);                                  //Function returns 1 on success and 0 on failure
@@ -36,7 +36,7 @@ void setup() {                   //Beginning of setup code
 }
 
 void loop() {                                 //Begins the loop...
-  if (samplesRead) {                          
+  if (samplesRead) {                          //Waits for samples to be read...
     for (int i = 0; i < SAMPLES; i++) {
       vReal[i] = sampleBuffer[i];
       vImag[i] = 0;
@@ -59,14 +59,21 @@ void loop() {                                 //Begins the loop...
     
     Serial.println(peak); //Prints that peak frequency to the serial monitor
     
-    samplesRead = 0;
+    samplesRead = 0;      //Clears the read count
    
   }
 }
 
+//Callback function to process the data from the PDM microphone.
+//NOTE: This callback is executed as part of an Interrupt Service Routine (ISR).
+//Therefore using `Serial` to print messages inside this function isn't supported.
+
 void onPDMdata()
 {
+  // Query the number of available bytes
   int bytesAvailable = PDM.available();
+  // Read into the sample buffer
   PDM.read(sampleBuffer, bytesAvailable);
+  // 16-bit, 2 bytes per sample
   samplesRead = bytesAvailable / 2;
 }
