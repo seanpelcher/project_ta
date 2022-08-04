@@ -34,3 +34,6 @@ Fixed an issue with the LED light blinking on and off during the running of the 
 7/25/2022 Notes: <br />
 Updated funwithfourier.ino to include detailed descriptions for most lines of code. <br />
 Added a basic bluetooth code to the repository, under tabluetooth.ino. <br />
+<br />
+8/4/2022 Notes: <br />
+Added an important code, tabbpmlimits.ino, to the repository. <br />
