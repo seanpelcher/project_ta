@@ -54,4 +54,4 @@ if (BPM > UpperLimit || BPM < LowerLimit){   // If the BPM exceeds the inputted 
     Serial.println("Abnormal Breathing Detected!"); // And alert the doctor of the abnormal breathing pattern.
   }
 ```
-The initial counter value (which is set to a default of 1000 during the void setup() part of the tabbpmlimits.ino code) determines how much time should be allowed to pass after measurements begin 
+The initial counter value (which is set to a default of 1000 during the void setup of tabbpmlimits.ino) determines how many BPM values should be allowed to pass after measurements begin before an alert (NEED TO CONTINUE WRITING THIS!!!)
