@@ -193,7 +193,7 @@ int value = myRA.getAverage();
   }
 
 }
-Serial.println("Bluetooth disconnected.");
+Serial.println("Bluetooth disconnected. Please reconnect device to access TrachAlert readings.");
 }
 }
 
