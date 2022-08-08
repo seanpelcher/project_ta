@@ -55,3 +55,6 @@ if (BPM > UpperLimit || BPM < LowerLimit){   // If the BPM exceeds the inputted 
   }
 ```
 The initial counter value (which is set to a default of 1000 during the void setup of tabbpmlimits.ino) determines how many BPM values should be allowed to pass after measurements begin before an alert for abnormal reading can be printed. The initial counter is important because it could take up to 30 seconds for the code to pick up an accurate respiratory rate, and without a brief buffer period, the abnormal reading alert would likely begin too soon. Once the respiratory rate is within the desired range, however, that value is shortened down (here to 300) in order to allow for a quicker alert if a problem were to occur. These counter values can be changed as needed, and it should be noted that about 32 BPM readings are printed every second. <br />
+<br />
+8/8/2022 Notes: <br />
+Added a variation of tabbpmlimits.ino, called tabbpmlimitsloop.ino, to the repository. The latter retains all the functionality of the former, with the difference being that tabbpmlimits.ino prompts the user to input the respiratory rate during void setup and tabbpmlimitsloop.ino prompts the user during void loop. <br />
