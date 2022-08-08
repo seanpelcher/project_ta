@@ -46,6 +46,7 @@ int UpperLimit;
 int LowerLimit;
 int counter;
 int gate;
+int door;
 
 // Bluetooth
 BLEService echoService("00000000-0000-1000-8000-00805f9b34fb");
@@ -54,12 +55,30 @@ BLEDescriptor Descriptor("beca6057-955c-4f8a-e1e3-56a1633f04b1","Descriptor");
 String var = "";
 
 void setup() {
-  gate = 3;
+
+delay(5000);
+Serial.println("Initializing TrachAlert...");
+delay(5000);
+  
+  gate = 3; // 3 = open, 1 = closed
+  door = 3; // 3 = open, 1 = closed
   pinMode(LED_BUILTIN, OUTPUT); //setup the LED light
   Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
+
+  if(!BLE.begin()){
+    Serial.println("BLE failed.");
+    while(1);
+  }
+
+  BLE.setLocalName("TrachAlert");
+  BLE.setAdvertisedService(echoService);
+  charac.addDescriptor(Descriptor);
+  echoService.addCharacteristic(charac);
+  BLE.addService(echoService);
+  BLE.advertise();
  
   PDM.onReceive(onPDMdata);
   PDM.setBufferSize(SAMPLES);
@@ -71,6 +90,9 @@ void setup() {
   }
   Serial.begin(115200); // Original = 115200
   myRA.clear(); // explicitly start clean -- ONLY need this line in void setup()
+
+  Serial.println("TrachAlert initialized.");
+  delay(5000);
 }
 
 void loop() {
