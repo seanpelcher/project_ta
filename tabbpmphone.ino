@@ -208,6 +208,8 @@ int value = myRA.getAverage();
   if (counter <= 0) {                               // If the counter value reaches 0 or below...
     digitalWrite(LED_BUILTIN, LOW);                 // Turn the LED on...
     Serial.println("Abnormal Breathing Detected!"); // And alert the doctor of the abnormal breathing pattern.
+    String ABD = "Abnormal Breathing Detected!";
+    charac.writeValue(ABD);
   }
 
   x++;
