@@ -70,4 +70,10 @@ The initial counter value (which is set to a default of 1000 during the void set
 <br />
 8/8/2022 Notes: <br />
 Added a variation of tabbpmlimits.ino, called tabbpmlimitsloop.ino, to the repository. The latter retains all the functionality of the former, with the only major difference being that tabbpmlimits.ino prompts the user to input the respiratory rate during void setup and tabbpmlimitsloop.ino prompts the user during void loop (not visible to user). The latter also includes extra lines of dialog to designate the start and end of void setup (visible to user). <br />
+<br />
 Added a variation of tabbpmlimitsloop.ino, called tabbpmlimitsloopbluetooth.ino, to the repository, laying the groundwork for bluetooth integration with the device in the near future. <br />
+<br />
+8/9/2022: <br />
+Added an important new code, tabbpmlimitsphone.ino, to the repository. This program allows for BPM readings measured by the TrachAlert to be viewed from a phone via the LightBlue app. It also fixes an issue from tabbpmlimitsloopbluetooth.ino which caused a disconnect between the board and phone after prompting the user to enter a response. <br />
+<br />
+8/10/2022 Notes: <br />
