@@ -43,7 +43,9 @@ arduinoFFT FFT = arduinoFFT();
 
 // Variables for Limits
 int UpperLimit;
+String UpperLimitW;
 int LowerLimit;
+String LowerLimitW;
 int counter;
 int gate;
 int door;
@@ -110,23 +112,39 @@ while(central.connected()){
 
 if(gate > 2){
   Serial.println("////////// TrachAlert System //////////");
+  String title = "TrachAlert System";
+  charac.writeValue(title);
   Serial.println("What should the upper limit for the respiratory rate be?");
+  String firstquestion = "Input Upper Limit: ";
+  charac.writeValue(firstquestion);
   while (Serial.available() == 0 && central.connected()) {
     // Wait for User to Input Data
   }
   UpperLimit = Serial.parseInt(); //Read the data the user has input
   Serial.print("Upper respiratory rate limit set to: ");
+  String firstresponse = "Upper Limit set to: ";
+  charac.writeValue(firstresponse);
   Serial.print(UpperLimit);
+  UpperLimitW = String(UpperLimit);
+  charac.writeValue(UpperLimitW);
   Serial.println(" BPM");
   Serial.println("And what should the lower limit for the respiratory rate be?");
+  String secondquestion = "Input Lower Limit: ";
+  charac.writeValue(secondquestion);
   while(Serial.available() == 1 && central.connected()) {
   // Wait for User to Input Data
   }
   LowerLimit = Serial.parseInt(); //Read the data the user has input
   Serial.print("Lower respiratory rate limit set to: ");
+  String secondresponse = "Lower Limit set to: ";
+  charac.writeValue(secondresponse);
   Serial.print(LowerLimit);
+  LowerLimitW = String(LowerLimit);
+  charac.writeValue(LowerLimitW);
   Serial.println(" BPM");
   Serial.println("Thank you for choosing TrachAlert. Respiratory rate measurement will start in 5 seconds.");
+  String thanks = "Thank you.";
+  charac.writeValue(thanks);
   counter = 1000; // Initial counter value
   delay(5000); // Seconds before respiratory rate measurement begins
   gate = 1;
