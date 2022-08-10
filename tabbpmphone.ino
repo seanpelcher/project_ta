@@ -56,9 +56,9 @@ int var;
 
 void setup() {
 
-delay(5000);
+delay(3000);
 Serial.println("Initializing TrachAlert...");
-delay(5000);
+delay(3000);
   
   gate = 3; // 3 = open, 1 = closed
   door = 3; // 3 = open, 1 = closed
@@ -92,7 +92,7 @@ delay(5000);
   myRA.clear(); // explicitly start clean -- ONLY need this line in void setup()
 
   Serial.println("TrachAlert initialized.");
-  delay(5000);
+  delay(2000);
   Serial.println("Attempting to establish a Bluetooth connection...");
 }
 
