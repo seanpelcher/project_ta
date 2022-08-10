@@ -52,7 +52,7 @@ int door;
 BLEService echoService("00000000-0000-1000-8000-00805f9b34fb");
 BLEUnsignedCharCharacteristic charac ("741c12b9-e13c-4992-8a5e-fce46dec0bff", BLERead | BLEWrite | BLENotify);
 BLEDescriptor Descriptor("beca6057-955c-4f8a-e1e3-56a1633f04b1","Descriptor");
-int var;
+int numericalbpm;
 
 void setup() {
 
@@ -175,8 +175,8 @@ int value = myRA.getAverage();
     // display bpm
   Serial.print(BPM);
   Serial.println(" BPM");
-  var = BPM;
-  charac.writeValue(var);
+  numericalbpm = BPM;
+  charac.writeValue(numericalbpm);
   
 
   if (BPM > UpperLimit || BPM < LowerLimit){ // If the BPM exceeds the upper limit or drops below the lower limit...
