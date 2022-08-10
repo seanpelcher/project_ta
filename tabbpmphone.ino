@@ -110,7 +110,7 @@ while(central.connected()){
 if(gate > 2){
   Serial.println("////////// TrachAlert System //////////");
   Serial.println("What should the upper limit for the respiratory rate be?");
-  while (Serial.available() == 0) {
+  while (Serial.available() == 0 && central.connected()) {
     // Wait for User to Input Data
   }
   UpperLimit = Serial.parseInt(); //Read the data the user has input
@@ -118,7 +118,7 @@ if(gate > 2){
   Serial.print(UpperLimit);
   Serial.println(" BPM");
   Serial.println("And what should the lower limit for the respiratory rate be?");
-  while(Serial.available() == 1) {
+  while(Serial.available() == 1 && central.connected()) {
   // Wait for User to Input Data
   }
   LowerLimit = Serial.parseInt(); //Read the data the user has input
