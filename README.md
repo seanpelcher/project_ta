@@ -2,14 +2,20 @@
 
 7/6/2022 Notes: <br />
 Created the project_ta repository!<br />
+<br />
 We are working with the Seeed XIAO BLE Sense nRF52840 board. <br />
+<br />
 Utilizing two unique sample codes, we are able to gather IMU and microphone readings, but not simultaneously. <br />
+<br />
 Basic information about getting started with the Seeed XIAO BLE Sense nRF52840 board, including the sample codes used to obtain the IMU and microphone readings, can be found [here](https://github.com/kevinwlu/iot/tree/master/lesson6/xiao). <br />
 <br />
 7/7/2022 Notes: <br />
 Microphone readings can now be displayed alongside IMU readings. The code for this can be found under tabbase.ino. <br />
+<br />
 Fixed an issue with the LED light remaining permanently on after viewing the serial plotter. <br />
+<br />
 Added an option for a delay between data measurements. <br />
+<br />
 Created two additional codes, tabedgeimpulse.ino and tabserialplotter.ino, to allow for the IMU and microphone readings to be sent to Edge Impulse and viewed on the serial plotter, respectively. <br/>
 <br />
 7/18/2022 Notes: <br />
@@ -25,7 +31,9 @@ where the "1" represents the desired frequency in Hz. <br />
 Added a basic FFT code (from [this article](https://1littleendian.medium.com/the-late-night-tinkering-projects-10-fun-with-fourier-a72b358229b3)) to the repository, under funwithfourier.ino. <br/>
 <br />
 This code can run on the Seeed XIAO BLE Sense nRF52840 board, but requires two additional libraries. <br />
+<br />
 The download for the first library, the arduinoFFT library, can be found [here](https://www.arduino.cc/reference/en/libraries/arduinofft/), and the documentation under the README [here](https://github.com/kosme/arduinoFFT). <br />
+<br />
 The download for the second library, the PDM library, can be found as a .zip file in the project_ta repository, and the documentation [here](https://docs.arduino.cc/learn/built-in-libraries/pdm). <br />
 <br />
 7/21/2022 Notes: <br />
@@ -33,12 +41,16 @@ Fixed an issue with the LED light blinking on and off during the running of the 
 <br />
 7/25/2022 Notes: <br />
 Updated funwithfourier.ino to include detailed descriptions for most lines of code. <br />
+<br />
 Added a basic bluetooth code to the repository, under tabluetooth.ino. <br />
 <br />
 8/4/2022 Notes: <br />
 Added an important new code, tabbpmlimits.ino, to the repository. <br />
+<br />
 tabbpmlimits.ino is a modification of the code found [here](https://github.com/oelsayed10/ArduinoFFT/blob/main/XiaoMicOriginal.ino). <br />
+<br />
 The original code utilizes the same logic for obtaining heart rate from an EKG reading in order to detect the respiratory rate (in breaths per minute, or BPM) based on frequency measurements. <br />
+<br />
 The new code improves upon the original code by allowing the user to select both an upper and lower limit for the respiratory rate utilizing a basic prompt interface within the serial monitor. Then, if the detected respiratory rate exceeds the upper limit or drops below the lower limit while the code is running, a message appears on the serial monitor alerting the user that an abnormal breathing pattern has been detected. This is accomplished through the use of logic statements and a counter. <br />
 <br />
 An annotated portion of the code is presented below:
