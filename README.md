@@ -58,4 +58,4 @@ The initial counter value (which is set to a default of 1000 during the void set
 <br />
 8/8/2022 Notes: <br />
 Added a variation of tabbpmlimits.ino, called tabbpmlimitsloop.ino, to the repository. The latter retains all the functionality of the former, with the only major difference being that tabbpmlimits.ino prompts the user to input the respiratory rate during void setup and tabbpmlimitsloop.ino prompts the user during void loop (not visible to user). The latter also includes extra lines of dialog to designate the start and end of void setup (visible to user). <br />
-Added a variation of tabbpmlimitsloop.ino, called tabbpmlimitsloopbluetooth.ino, to the repository, laying the groundwork for bluetooth integration with the device in the near future.
+Added a variation of tabbpmlimitsloop.ino, called tabbpmlimitsloopbluetooth.ino, to the repository, laying the groundwork for bluetooth integration with the device in the near future. <br />
