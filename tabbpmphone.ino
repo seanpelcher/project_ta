@@ -44,11 +44,15 @@ arduinoFFT FFT = arduinoFFT();
 // Variables for Limits
 int UpperLimit;
 String UpperLimitW;
+String UpperLimitInput;
 int LowerLimit;
 String LowerLimitW;
+String LowerLimitInput;
 int counter;
 int gate;
 int door;
+int uppertunnel;
+int lowertunnel;
 
 // Bluetooth
 BLEService echoService("00000000-0000-1000-8000-00805f9b34fb");
@@ -65,6 +69,8 @@ delay(3000);
   
   gate = 3; // 3 = open, 1 = closed
   door = 3; // 3 = open, 1 = closed
+  uppertunnel = 3;
+  lowertunnel = 3;
   pinMode(LED_BUILTIN, OUTPUT); //setup the LED light
   Serial.begin(115200);
   while (!Serial) {
@@ -117,10 +123,13 @@ if(gate > 2){
   Serial.println("What should the upper limit for the respiratory rate be?");
   String firstquestion = "Input Upper Limit: ";
   charac.writeValue(firstquestion);
-  while (Serial.available() == 0 && central.connected()) {
-    // Wait for User to Input Data
+  while (central.connected() && uppertunnel > 2) {
+    if(charac.written()){
+      UpperLimitInput = charac.value();
+      UpperLimit = UpperLimitInput.toInt();
+      uppertunnel = 1;
+    }
   }
-  UpperLimit = Serial.parseInt(); //Read the data the user has input
   Serial.print("Upper respiratory rate limit set to: ");
   String firstresponse = "Upper Limit set to: ";
   charac.writeValue(firstresponse);
@@ -131,10 +140,13 @@ if(gate > 2){
   Serial.println("And what should the lower limit for the respiratory rate be?");
   String secondquestion = "Input Lower Limit: ";
   charac.writeValue(secondquestion);
-  while(Serial.available() == 1 && central.connected()) {
-  // Wait for User to Input Data
+  while (central.connected() && lowertunnel > 2) {
+    if(charac.written()){
+      LowerLimitInput = charac.value();
+      LowerLimit = LowerLimitInput.toInt();
+      lowertunnel = 1;
+    }
   }
-  LowerLimit = Serial.parseInt(); //Read the data the user has input
   Serial.print("Lower respiratory rate limit set to: ");
   String secondresponse = "Lower Limit set to: ";
   charac.writeValue(secondresponse);
