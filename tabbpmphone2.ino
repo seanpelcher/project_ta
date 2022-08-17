@@ -65,6 +65,9 @@ BLEStringCharacteristic charac ("741c12b9-e13c-4992-8a5e-fce46dec0bff", BLERead 
 BLEDescriptor Descriptor("beca6057-955c-4f8a-e1e3-56a1633f04b1","Descriptor");
 int numberbpm;
 String wordbpm;
+int numbertemp;
+String wordtemp;
+String phonedisplay;
 
 // Temperature
 LSM6DS3 myIMU(I2C_MODE, 0x6A);
@@ -223,11 +226,14 @@ if (caution > 0) {
   Serial.print(BPM);
   Serial.print(" BPM");
   Serial.print("\t");
-  Serial.print(myIMU.readTempF(),4);
+  Serial.print(myIMU.readTempF(),2);
   Serial.println(" F");
   numberbpm = BPM;
   wordbpm = String(numberbpm);
-  charac.writeValue(wordbpm);
+  numbertemp = myIMU.readTempF();
+  wordtemp = String(numbertemp);
+  String phonedisplay = String(wordbpm + " BPM    " + wordtemp + " F");
+  charac.writeValue(phonedisplay);
   caution = caution - 1;
 }
 
