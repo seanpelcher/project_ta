@@ -220,33 +220,15 @@ if (caution > 0) {
 
 if (caution <= 0) {
  if (value < LowerThreshold) {
-    if (BeatComplete) {
-      BPM = millis() - LastTime;
-      BPM = int(60 / (float(BPM) / 1000));
-      BPMTiming = false;
-      BeatComplete = false;
-    }
-    if (BPMTiming == false) {
-      LastTime = millis();
-      BPMTiming = true;
-    }
-    BeatComplete = true;
-    // display bpm
-  Serial.print(BPM);
-  Serial.println(" BPM");
   Serial.println("TrachAlert dislodged!");
-  numberbpm = BPM;
-  wordbpm = String(numberbpm);
-  charac.writeValue(wordbpm);
+  String dislodged = "TrachAlert dislodged!";
+  charac.writeValue(dislodged);
+  caution = caution - 1;
  }
 
  if (value > UpperThreshold) {
-  escape = escape + 1;
- }
-
- if (escape >=){
-  caution = 300;
-  escape = 0;
+   BeatComplete = true;
+  caution = caution + 100;
  }
 }
   
