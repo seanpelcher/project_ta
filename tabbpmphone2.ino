@@ -3,8 +3,11 @@
 #include "arduinoFFT.h"
 #include "RunningAverage.h"
 #include "ArduinoBLE.h"
+#include "LSM6DS3.h"
+#include "Wire.h"
 
 // Definitions
+#define DEBUG 1
 #define SAMPLES 256             //Must be a power of 2
 #define SAMPLING_FREQUENCY 16000 //Hz, must be less than 10000 due to ADC
 #define samp_siz 4 // Experiment
@@ -63,6 +66,9 @@ BLEDescriptor Descriptor("beca6057-955c-4f8a-e1e3-56a1633f04b1","Descriptor");
 int numberbpm;
 String wordbpm;
 
+// Temperature
+LSM6DS3 myIMU(I2C_MODE, 0x6A);
+
 void setup() {
 
 delay(3000);
@@ -82,6 +88,10 @@ delay(3000);
   if(!BLE.begin()){
     Serial.println("BLE failed.");
     while(1);
+  }
+
+  if (myIMU.begin() !=0){
+    Serial.println("Device error.");
   }
 
   BLE.setLocalName("TrachAlert");
@@ -211,7 +221,10 @@ if (caution > 0) {
     BeatComplete = true;
     // display bpm
   Serial.print(BPM);
-  Serial.println(" BPM");
+  Serial.print(" BPM");
+  Serial.print("\t");
+  Serial.print(myIMU.readTempF(),4);
+  Serial.println(" F");
   numberbpm = BPM;
   wordbpm = String(numberbpm);
   charac.writeValue(wordbpm);
@@ -248,8 +261,7 @@ if (caution <= 0) {
   x++;
   Signal = myRA.getAverage(); // Read the PulseSensor's value.
   // Assign this value to the "Signal" variable.
-  }
-
+}
 }
 Serial.println("Bluetooth disconnected. Please reconnect device to access TrachAlert readings.");
 }
