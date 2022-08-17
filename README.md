@@ -74,7 +74,10 @@ Added a variation of tabbpmlimits.ino, called tabbpmlimitsloop.ino, to the repos
 Added a variation of tabbpmlimitsloop.ino, called tabbpmlimitsloopbluetooth.ino, to the repository, laying the groundwork for bluetooth integration with the device in the near future. <br />
 <br />
 8/9/2022: <br />
-Added an important new code, tabbpmlimitsphone.ino, to the repository. This program allows for BPM readings measured by the TrachAlert to be viewed from a phone via the LightBlue app. It also fixes an issue from tabbpmlimitsloopbluetooth.ino which caused a disconnect between the board and phone after prompting the user to enter a response. <br />
+Added an important new code, tabbpmphone.ino, to the repository. This program allows for BPM readings measured by the TrachAlert to be viewed from a phone via the LightBlue app. It also fixes an issue from tabbpmlimitsloopbluetooth.ino which caused a disconnect between the board and phone after prompting the user to enter a response. <br />
 <br />
 8/10/2022 Notes: <br />
-Updated tabbpmlimitsphone.ino to a MILESTONE new version, allowing for the respiratory rate limits (both upper and lower) to be inputted from a phone via prompts displayed on the LightBlue app. All information conveyed to the user is in the form of UTF-8 string, and the respiratory rate limits can be inputted as UTF-8 string. To set the LightBlue app to receive and send UTF-8 string, simply tap the word "Hex" in the top right corner of the app once connected to TrachAlert and change the Characteristic Format to UTF-8 string. The program now also sends the abnormal breathing warning via the LightBlue app. <br />
+Updated tabbpmphone.ino to a MILESTONE new version, allowing for the respiratory rate limits (both upper and lower) to be inputted from a phone via prompts displayed on the LightBlue app. All information conveyed to the user is in the form of UTF-8 string, and the respiratory rate limits can be inputted as UTF-8 string. To set the LightBlue app to receive and send UTF-8 string, simply tap the word "Hex" in the top right corner of the app once connected to TrachAlert and change the Characteristic Format to UTF-8 string. The program now also sends the abnormal breathing warning via the LightBlue app. <br />
+8/17/2022 Notes: <br />
+Added an update for tabbpmphone.ino, named tabbpmphone2.ino, to the repository. This version adds a new alert which warns the user via the LightBlue app when the TrachAlert has become dislodged from the patient. <br />
+<br />
