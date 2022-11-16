@@ -201,7 +201,8 @@ if(gate > 2){
   samples++;
   //Serial.print("Running Average: ");
     myTime = millis();
-    Serial.println(myTime);
+    Serial.print(myTime);
+    Serial.print(",");
   Serial.println(myRA.getAverage(), 4);
   int numberaverage = myRA.getAverage();
   String wordaverage = String(numberaverage);
