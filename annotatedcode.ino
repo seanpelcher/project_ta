@@ -88,7 +88,7 @@ String wordaverage;
 #define SAMPLESmic 800                   
 
 // Low-Pass Filter Variables for Mic
-#define LPF_ALPHAmic 0.1      // Filter constant (0 < alpha < 1)
+#define LPF_ALPHAmic 0.1      // filter constant (0 < alpha < 1)
 float prevValuemic = 0;       // sets float "prevValuemic" equal to 0
 
 // BPM Code for Mic
@@ -124,59 +124,58 @@ int16_t recording_buf[SAMPLESmic];
 volatile uint8_t recording = 0;
 volatile static bool record_ready = false;
 
-void setup() {
+// Setting Up TrachAlert
+void setup() {                                   // setup code begins
 
-  delay(5000);
-  Serial.println("Initializing TrachAlert...");
-  delay(5000);
+  delay(5000);                                   // wait 5 seconds         
+  Serial.println("Initializing TrachAlert...");  // display a loading message to the user
+  delay(5000);                                   // wait 5 seconds
 
-  Mic.set_callback(audio_rec_callback);
+  Mic.set_callback(audio_rec_callback);          // start to initialize the microphone
 
-  detour = 3;
-  gate = 3; // 3 = open, 1 = closed
-  door = 3; // 3 = open, 1 = closed
-  uppertunnel = 3;
-  lowertunnel = 3;
-  middletunnel = 3;
+  detour = 3;                                    // set "detour" to open (3)
+  gate = 3; // 3 = open, 1 = closed              // set "gate" to open (3)
+  door = 3; // 3 = open, 1 = closed              // set "door" to open (3)
+  uppertunnel = 3;                               // set "uppertunnel" to open (3)
+  lowertunnel = 3;                               // set "lowertunnel" to open (3)
+  middletunnel = 3;                              // set "middletunnel" to open (3)
   
-  Serial.begin(9600);
+  Serial.begin(9600);  // tells the arduino to get ready to exchange messages with the serial monitor at a data rate of 9600 bits per second
 
-  if (!Mic.begin()) {
-    Serial.println("Mic initialization failed.");
-    while (1); }
+  if (!Mic.begin()) {                               // if there is a problem with the microphone...
+    Serial.println("Mic initialization failed.");   // tell the user that...
+    while (1); }                                    // and do not continue running the code!
 
-  if(!BLE.begin()){
-    Serial.println("BLE failed.");
-    while(1);
-  }
+  if(!BLE.begin()){                                 // if there is a problem with the bluetooth...
+    Serial.println("BLE failed.");                  // tell the user that...
+    while(1); }                                     // and do not continue running the code!
   
- if (myIMU.begin() != 0) {
-       Serial.println("Device error."); } 
+ if (myIMU.begin() != 0) {                          // if there is a problem with the accelerometer system...
+       Serial.println("Device error."); }           // tell the user that, but code can continue!
     
- else { Serial.println("Device OK!");
-        Serial.println("Mic initialization done.");
-       // Serial.println("Microphone,Accelerometer,Temperature"); }
-}
+ else { Serial.println("Device OK!");                   // otherwise, tell the user that everything is ok...
+        Serial.println("Mic initialization done."); }   // and that the microphone initilization is done!
 
-  BLE.setLocalName("TrachAlert");
+  // Bluetooth Initilization (not necessary to breakdown, just include)
+  BLE.setLocalName("TrachAlert");         // name the TrachAlert device
   BLE.setAdvertisedService(echoService);
   charac.addDescriptor(Descriptor);
   echoService.addCharacteristic(charac);
   BLE.addService(echoService);
-  BLE.advertise();
+  BLE.advertise();                        // begin bluetooth communication
   
-  startMillis = millis();
+  startMillis = millis();                 // set the variable "startMillis" equal to the current time
 
   for (int t = 0; t < 10; t++) {
     slopeArray[t] = 0;
   }
 
-  Serial.println("TrachAlert initialized.");
-  delay(2000);
-  Serial.println("Attempting to establish a Bluetooth connection...");
-}
+  Serial.println("TrachAlert initialized.");                              // tell the user that the TrachAlert has initialized...
+  delay(2000);                                                            // wait 2 seconds...
+  Serial.println("Attempting to establish a Bluetooth connection..."); }  // then prepare for a Bluetooth connection.
 
-void loop() {
+// Running the TrachAlert
+void loop() {        
 BLEDevice central = BLE.central();
 
 if(central) {
