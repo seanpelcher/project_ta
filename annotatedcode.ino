@@ -175,48 +175,51 @@ void setup() {                                   // setup code begins
   Serial.println("Attempting to establish a Bluetooth connection..."); }  // then prepare for a Bluetooth connection.
 
 // Running the TrachAlert
-void loop() {        
-BLEDevice central = BLE.central();
+void loop() {                                                     // the main loop starts and cannot be exited
+BLEDevice central = BLE.central();                                // a bluetooth connected is awaited
 
-if(central) {
-  Serial.println("Bluetooth connection established.");
-  Serial.print("Connected to central: ");
+if(central) {                                                     // the central loop starts once bluetooth is connected
+  Serial.println("Bluetooth connection established.");            // tell the user that the connection is established...
+  Serial.print("Connected to central: ");                         // and state the address of the connected device
   Serial.println(central.address());
 
-while(central.connected()){
-if(gate > 2){
-  Serial.println("////////// TrachAlert System //////////");
+while(central.connected()){                                       // the connected loop starts only if there is a bluetooth connection
+if(gate > 2){                                                     // the gate was opened during setup so this loop is entered
+  Serial.println("////////// TrachAlert System //////////");      
   String title = "TrachAlert System";
   charac.writeValue(title);
-  Serial.println("Manual Mode (1) or Age Mode (2)?");
-  String manual = "Manual Mode (1) or Age Mode (2)";
-  charac.writeValue(manual);
-  while (central.connected() && middletunnel > 2) {
-    if(charac.written()){
-      ModeInput = charac.value();
-      Mode = ModeInput.toInt();
-      middletunnel = 1;
+  Serial.println("Manual Mode (1) or Age Mode (2)?");             // ask the user if they would like to enter manual or age mode
+  String manual = "Manual Mode (1) or Age Mode (2)";              // manual mode allows the user to unput their own upper and lower limits
+  charac.writeValue(manual);                                      // age mode simply requires an age input from the user and automatically sets limits
+  
+  while (central.connected() && middletunnel > 2) {               // if bluetooth is connected and the middle tunnel is open (which it should be)...
+    if(charac.written()){                                         // if the user inputted either a "1" or "2" for the mode...
+      ModeInput = charac.value();                                 // set the mode to either manual (1) or age (2)...
+      Mode = ModeInput.toInt();                                   // and convert the mode into an integer...
+      middletunnel = 1;                                           // then close the middle tunnel...
     }
-  }
+  }                                                               // so that this loop can't be accessed again    
 
-  if (Mode == 1) {
-    Serial.println("What should the upper limit for the respiratory rate be?");
+  if (Mode == 1) {                                                                // if the mode is set to manual...
+    Serial.println("What should the upper limit for the respiratory rate be?");   // ask what the upper limit should be...
   String firstquestion = "Input Upper Limit: ";
   charac.writeValue(firstquestion);
-  while (central.connected() && uppertunnel > 2) {
-    if(charac.written()){
-      UpperLimitInput = charac.value();
-      UpperLimit = UpperLimitInput.toInt();
-      uppertunnel = 1;
+  while (central.connected() && uppertunnel > 2) {                             // if bluetooth is connected and the upper tunnel is open (which it should be)...
+    if(charac.written()){                                                      // if the user inputted an upper limit...
+      UpperLimitInput = charac.value();                                        // set the upper limit to that number...
+      UpperLimit = UpperLimitInput.toInt();                                    // and convert the upper limit into an integer...
+      uppertunnel = 1;                                                         // then close the upper tunnel...                    
     }
-  }
-  Serial.print("Upper respiratory rate limit set to: ");
+  }                                                                            // so that this loop can't be accessed again
+
+  Serial.print("Upper respiratory rate limit set to: ");                       // tell the user what the                    
   String firstresponse = "Upper Limit set to: ";
   charac.writeValue(firstresponse);
   Serial.print(UpperLimit);
   UpperLimitW = String(UpperLimit);
   charac.writeValue(UpperLimitW);
   Serial.println(" BPM");
+
   Serial.println("And what should the lower limit for the respiratory rate be?");
   String secondquestion = "Input Lower Limit: ";
   charac.writeValue(secondquestion);
