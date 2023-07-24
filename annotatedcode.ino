@@ -189,12 +189,12 @@ if(gate > 2){                                                     // the gate wa
   String title = "TrachAlert System";
   charac.writeValue(title);
   Serial.println("Manual Mode (1) or Age Mode (2)?");             // ask the user if they would like to enter manual or age mode
-  String manual = "Manual Mode (1) or Age Mode (2)";              // manual mode allows the user to unput their own upper and lower limits
+  String manual = "Manual Mode (1) or Age Mode (2)";              // manual mode allows the user to input their own upper and lower limits
   charac.writeValue(manual);                                      // age mode simply requires an age input from the user and automatically sets limits
   
   while (central.connected() && middletunnel > 2) {               // if bluetooth is connected and the middle tunnel is open (which it should be)...
     if(charac.written()){                                         // if the user inputted either a "1" or "2" for the mode...
-      ModeInput = charac.value();                                 // set the mode to either manual (1) or age (2)...
+      ModeInput = charac.value();                                 // set the mode to either manual for "1" or age "2"...
       Mode = ModeInput.toInt();                                   // and convert the mode into an integer...
       middletunnel = 1;                                           // then close the middle tunnel...
     }
@@ -212,7 +212,7 @@ if(gate > 2){                                                     // the gate wa
     }
   }                                                                            // so that this loop can't be accessed again
 
-  Serial.print("Upper respiratory rate limit set to: ");                       // tell the user what the                    
+  Serial.print("Upper respiratory rate limit set to: ");                       // tell the user what the upper limit was set to
   String firstresponse = "Upper Limit set to: ";
   charac.writeValue(firstresponse);
   Serial.print(UpperLimit);
@@ -220,46 +220,49 @@ if(gate > 2){                                                     // the gate wa
   charac.writeValue(UpperLimitW);
   Serial.println(" BPM");
 
-  Serial.println("And what should the lower limit for the respiratory rate be?");
+  Serial.println("And what should the lower limit for the respiratory rate be?"); // ask what the lower limit should be...
   String secondquestion = "Input Lower Limit: ";
   charac.writeValue(secondquestion);
-  while (central.connected() && lowertunnel > 2) {
-    if(charac.written()){
-      LowerLimitInput = charac.value();
-      LowerLimit = LowerLimitInput.toInt();
-      lowertunnel = 1;
+  while (central.connected() && lowertunnel > 2) {                                // if bluetooth is connected and the lower tunnel is open (which it should be)...
+    if(charac.written()){                                                         // if the user inputted a lower limit...
+      LowerLimitInput = charac.value();                                           // set the lower limit to that number...
+      LowerLimit = LowerLimitInput.toInt();                                       // and convert the lower limit into an integer...
+      lowertunnel = 1;                                                            // then close the lower tunnel...
     }
-  }
-  Serial.print("Lower respiratory rate limit set to: ");
+  }                                                                               // so that this loop can't be accessed again
+  
+  Serial.print("Lower respiratory rate limit set to: ");                          // tell the user what the lower limit was set to
   String secondresponse = "Lower Limit set to: ";
   charac.writeValue(secondresponse);
   Serial.print(LowerLimit);
   LowerLimitW = String(LowerLimit);
   charac.writeValue(LowerLimitW);
   Serial.println(" BPM");
-  Serial.println("Thank you for choosing TrachAlert. Respiratory rate measurement will start in 5 seconds.");
+  
+  Serial.println("Thank you for choosing TrachAlert. Respiratory rate measurement will start in 5 seconds."); // thank the user and prepare to start measurements
   String thanks = "Thank you.";
   charac.writeValue(thanks);
-  counter = 1000; // Initial counter value
-  caution = 300; //Initial caution value
-  escape = 0; //Initial escape value;
-  delay(5000); // Seconds before respiratory rate measurement begins
-  gate = 1;
-  Mode = 0;
-  }
+  counter = 1000;                    // initial counter value
+  caution = 300;                     // initial caution value
+  escape = 0;                        // initial escape value;
+  delay(5000);                       // seconds before respiratory rate measurement begins
+  gate = 1;                          // close the gate so that the manual mode loop cannot be entered again
+  Mode = 0;                          // set the mode to 0 as an extra precaution to avoid entering the loop again
+  }                                  // exit manual mode setup loop
 
-  if (Mode == 2) {
-  Serial.println("What is the age of the patient? (if patient is less than 1 year old, input 0)");
+  if (Mode == 2) {                                                                                    // if the mode is set to age...
+  Serial.println("What is the age of the patient? (if patient is less than 1 year old, input 0)");    // ask what the age of the patient is...
   String firstquestion = "Input Age in years:";
   charac.writeValue(firstquestion);
-  while (central.connected() && uppertunnel > 2) {
-    if(charac.written()){
-      AgeInput = charac.value();
-      Age = AgeInput.toInt();
-      uppertunnel = 1;
+  while (central.connected() && uppertunnel > 2) {           // if bluetooth is connected and the upper tunnel is open (which it should be)...
+    if(charac.written()){                                    // if the user inputted an age...
+      AgeInput = charac.value();                             // set the age to that number...
+      Age = AgeInput.toInt();                                // and convert the age into an integer...
+      uppertunnel = 1;                                       // then close the upper tunnel...
     }
-  }
-  Serial.print("Age set to ");
+  }                                                          // so that this loop can't be accessed again
+    
+  Serial.print("Age set to ");                               // tell the user what the age was set to
   String firstresponse = "Age set to: ";
   charac.writeValue(firstresponse);
   Serial.print(Age);
@@ -267,32 +270,32 @@ if(gate > 2){                                                     // the gate wa
   charac.writeValue(AgeW);
   Serial.println(" yrs");
   
-  if (Age < 1) {
-    UpperLimit = 60;
-    LowerLimit = 30;
+  if (Age < 1) {                // if the age was set to less than 1 (infant, etc.)
+    UpperLimit = 60;            // set the upper limit to 60...
+    LowerLimit = 30;            // and the lower limit to 30
   }
-  if (Age >= 1 && Age < 3){
-    UpperLimit = 40;
-    LowerLimit = 24;
+  if (Age >= 1 && Age < 3){     // if the age was set to greater than or equal to 1 or less than 3
+    UpperLimit = 40;            // set the upper limit to 40...
+    LowerLimit = 24;            // and the lower limit to 24
   }
-  if (Age >= 3 && Age < 6){
-    UpperLimit = 34;
-    LowerLimit = 22;
+  if (Age >= 3 && Age < 6){     // if the age was set to greater than or equal to 3 or less than 6
+    UpperLimit = 34;            // set the upper limit to 34...
+    LowerLimit = 22;            // and the lower limit to 22
   }
-  if (Age >= 6 && Age < 12){
-    UpperLimit = 30;
-    LowerLimit = 18;
+  if (Age >= 6 && Age < 12){    // if the age was set to greater than or equal to 6 or less than 12
+    UpperLimit = 30;            // set the upper limit to 30...
+    LowerLimit = 18;            // and the lower limit to 18
   }
-  if (Age >= 12 && Age < 18){
-    UpperLimit = 16;
-    LowerLimit = 12;
+  if (Age >= 12 && Age < 18){   // if the age was set to greater than or equal to 12 or less than 18
+    UpperLimit = 16;            // set the upper limit to 16...
+    LowerLimit = 12;            // and the lower limit to 12
   }
-  if (Age >= 18 && Age < 200){
-    UpperLimit = 18;
-    LowerLimit = 12;
+  if (Age >= 18 && Age < 200){  // if the age was set to greater than or equal to 18 or less than 200
+    UpperLimit = 18;            // set the upper limit to 18...
+    LowerLimit = 12;            // and the lower limit to 12
   }
   
-  Serial.print("Lower respiratory rate limit set to: ");
+  Serial.print("Lower respiratory rate limit set to: ");  // tell the user what the lower limit was set to
   String secondresponse = "Lower Limit set to: ";
   charac.writeValue(secondresponse);
   Serial.print(LowerLimit);
@@ -300,9 +303,9 @@ if(gate > 2){                                                     // the gate wa
   charac.writeValue(LowerLimitW);
   Serial.println(" BPM");
 
-delay (500); 
+delay (500);  // wait 0.5 seconds...
 
-  Serial.print("Upper respiratory rate limit set to: ");
+  Serial.print("Upper respiratory rate limit set to: ");  // tell the user what the upper limit was set to
   String thirdresponse = "Upper Limit set to: ";
   charac.writeValue(thirdresponse);
   Serial.print(UpperLimit);
@@ -310,23 +313,22 @@ delay (500);
   charac.writeValue(UpperLimitW);
   Serial.println(" BPM");
   
-  Serial.println("Thank you for choosing TrachAlert. Respiratory rate measurement will start in 5 seconds.");
+  Serial.println("Thank you for choosing TrachAlert. Respiratory rate measurement will start in 5 seconds.");  // thank the user and prepare to start measurements
   //String thanks = "Thank you.";
   //charac.writeValue(thanks);
-  counter = 1000; // Initial counter value
-  caution = 300; //Initial caution value
-  escape = 0; //Initial escape value;
-  delay(5000); // Seconds before respiratory rate measurement begins
-  gate = 1;
-  Mode = 0;
-}
-}
+  counter = 1000;     // initial counter value
+  caution = 300;      // initial caution value
+  escape = 0;         // initial escape value;
+  delay(5000);        // seconds before respiratory rate measurement begins
+  gate = 1;           // close the gate so that the manual mode loop cannot be entered again
+  Mode = 0;           // set the mode to 0 as an extra precaution to avoid entering the loop again
+  }                   // exit age mode setup loop...
+}                     // and exit the gate loop as well (still in the while command)
 
-        if (record_ready)
-  {
-    for (int s = 0; s < SAMPLESmic; s++) {
+if (record_ready) {                        // start of record_ready loop            
+  for (int s = 0; s < SAMPLESmic; s++) {   // start of sampling loop
     
-  uint8_t i;
+  uint8_t i;     // 
   float average;
 
   // take N samples in a row, with a slight delay
