@@ -326,67 +326,70 @@ delay (500);  // wait 0.5 seconds...
 }                     // and exit the gate loop as well (still in the while command)
 
 if (record_ready) {                        // start of record_ready loop            
-  for (int s = 0; s < SAMPLESmic; s++) {   // start of sampling loop
+  for (int s = 0; s < SAMPLESmic; s++) {   // start of sampling loop, SAMPLESmic is set to 800 by default, loop continues as long as "s" remains less than SAMPLESmic
+
+  uint8_t i;     // creates the unsigned integer of 8 bits "i"
+  float average; // creates the float "average"
+
+  // Take N samples in a row, with a slight delay
+  for (i = 0; i < NUMSAMPLES; i++) {       // NUMSAMPLES is set to 3 by default, loop continues as long as "i" remains less than NUMSAMPLES
+   samples[i] = analogRead(THERMISTORPIN); // each thermistor reading constitutes a sample
+  }
     
-  uint8_t i;     // 
-  float average;
-
-  // take N samples in a row, with a slight delay
-  for (i=0; i< NUMSAMPLES; i++) {
-   samples[i] = analogRead(THERMISTORPIN);
+  // Average all the samples out
+  average = 0;                          // sets float "average" equal to 0
+  for (i = 0; i < NUMSAMPLES; i++) {    // NUMSAMPLES is set to 3 by default, loop continues as long as "i" remains less than NUMSAMPLES
+    average += samples[i];              // adds the value of the sample to "average"
+    delay(2);                           // a very slight delay to allow for calculation
   }
-  
-  // average all the samples out
-  average = 0;
-  for (i=0; i< NUMSAMPLES; i++) {
-    average += samples[i];
-    delay(2);
-  }
-  average /= NUMSAMPLES;
+  average /= NUMSAMPLES;                // divide "average" by NUMSAMPLES to get the average raw thermistor reading
 
-  // convert the value to resistance
-  average = 1023 / average - 1;
-  average = SERIESRESISTOR / average;
+  // Convert the value to resistance
+  average = 1023 / average - 1;         // divide 1023 by "average" subtracted by 1
+  average = SERIESRESISTOR / average;   // divide "SERIESRESISTOR" (which is set to 10000) by the previous answer
   
   // Filter the value with a low-pass filter
   float filteredValue = (LPF_ALPHA * average) + ((1 - LPF_ALPHA) * prevValue);
   prevValue = filteredValue;
 
   // Calculate the Steinhart value from the filtered value
-  float steinhart;
+  float steinhart;                                   // creates the float "steinhart"
   steinhart = filteredValue / THERMISTORNOMINAL;     // (R/Ro)
   steinhart = log(steinhart);                        // ln(R/Ro)
   steinhart /= BCOEFFICIENT;                         // 1/B * ln(R/Ro)
-  steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15);   // + (1/To)
-  steinhart = 1.0 / steinhart ;                      // Invert
+  steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15);  // + (1/To)
+  steinhart = 1.0 / steinhart ;                      // invert
   steinhart -= 273.15;                               // convert absolute temp to C
   
   // Output the Steinhart value and slope
-  myTime = millis();
-    float slope = (steinhart - prevSlope) / ((myTime - prevTime) / 1000);
-   // float slope = (steinhart - prevSlope) / (myTime - prevTime);
-    prevTime = myTime;
-    prevSlope = steinhart;
+  myTime = millis();                                                     // set myTime equal to the current time in milliseconds
+  float slope = (steinhart - prevSlope) / ((myTime - prevTime) / 1000);  // determine the slope of the thermistor readings
+  // float slope = (steinhart - prevSlope) / (myTime - prevTime);
+    prevTime = myTime;                                                // set prevTime equal to myTime...
+    prevSlope = steinhart;                                            // and set prevSlope to the last steinhart reading to prepare for the next slope calculation
 
-
-int value1 = slope;
-  if (value1 > UpperThreshold) {
-    if (BeatComplete) {
-      BPM = millis() - LastTime;
-      BPM = int(60 / (float(BPM) / 1000));
-      BPMTiming = false;
-      BeatComplete = false;
+// 
+int value1 = slope;                         // sets the integer "value1" equal to "slope"
+  if (value1 > UpperThreshold) {            // if "value1" (or the slope) is greater than the upper threshold of 0.5...
+    
+    if (BeatComplete) {                     // and if BeatComplete is set to true...
+      BPM = millis() - LastTime;            // set "BPM" equal to the current time in milliseconds subtracted by the LastTime...
+      BPM = int(60 / (float(BPM) / 1000));  // then divide "BPM" by 1000 and divide 60 by that answer
+      BPMTiming = false;                    // set BPMTiming to false...
+      BeatComplete = false;                 // and set BeatComplete to false...
     }
-    if (BPMTiming == false) {
-      LastTime = millis();
-      BPMTiming = true;
+    
+    if (BPMTiming == false) {               // if BPMTiming is false (which it should have just been set to...)
+      LastTime = millis();                  // set LastTime equal to the current time in milliseconds
+      BPMTiming = true;                     // and set BPMTiming to true
     }
   }
-  if ((value1 < LowerThreshold) & (BPMTiming))
-    BeatComplete = true;
+  
+  if ((value1 < LowerThreshold) & (BPMTiming)) // if "value1" (or the slope) is less than the lower threshold of -0.2
+    BeatComplete = true;                       // set BeatComplete equal to true
 
 
-    delay(6); // 5;
+    delay(6);  // a very slight delay to allow for calculation
 
   //int16_t sample = filter.step(recording_buf[i]);
   int16_t samplemic = recording_buf[s];
@@ -422,6 +425,7 @@ int value = filteredValuemic;
   }
   if ((value < LowerThresholdmic) & (BPMTimingmic))
     BeatCompletemic = true;
+
 Serial.print(myTime);
 Serial.print(";    ");
 Serial.print(BPMmic);
@@ -438,8 +442,7 @@ String bpm_temp = String(wordbpm + " BPM Temp");
 String phonedisplay = String(bpm_mic + "; " + bpm_temp);
 charac.writeValue(phonedisplay);
 
-    //delay(1); // 5
-  // check if BPMmic or BPM values exceed upper limit or drop below lower limit
+// check if BPMmic or BPM values exceed upper limit or drop below lower limit
 if (BPM > UpperLimit || BPM < LowerLimit) {
   if (BPMmic > UpperLimit || BPMmic < LowerLimit) {
     abnormalcounter = abnormalcounter - 1;
