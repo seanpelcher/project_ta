@@ -513,23 +513,31 @@ if (slope < 0) {                                 // if the slope of the thermist
       abnormalcounter4 = abnormalcounter4 - 1;   // subtract 1 from the (4) abnormal breathing counter
 } else { abnormalcounter4 = 640; }               // otherwise, return the (4) abnormal breathing counter to 640
 
-if (abnormalcounter4 <= 0) {
-  Serial.println("Device Dislodgement Detected");
+if (abnormalcounter4 <= 0) {                            // if the (4) abnormal breathing counter is less than or equal to 0...
+  Serial.println("Device Dislodgement Detected");       // send the user a DISLODGEMENT ALERT
   String Dislodgement = "Device Dislodgement Detected";
   charac.writeValue(Dislodgement);
 }
 
-
+  }  // end of sampling loop
   
-  }
+  }  // end of record_ready loop
   
-  }  
 record_ready = false;
-}
+  
+}    // end of connected loop
+  
 Serial.println("Bluetooth disconnected. Please reconnect device to access TrachAlert readings.");
-}
-}
+  
+}  // end of central loop
+  
+} // end of main loop
 
+
+
+
+
+// Necessary to include for the code to work but not necessary to understand in full
 static void audio_rec_callback(uint16_t *buf, uint32_t buf_len) {
 
   static uint32_t idx = 0;
