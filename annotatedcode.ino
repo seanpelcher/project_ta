@@ -380,7 +380,7 @@ int value1 = slope;                         // sets the integer "value1" equal t
     }
     
     if (BPMTiming == false) {               // if BPMTiming is false (which it should have just been set to...)
-      LastTime = millis();                  // set LastTime equal to the current time in milliseconds
+      LastTime = millis();                  // set LastTime equal to the current time in milliseconds...
       BPMTiming = true;                     // and set BPMTiming to true
     }
   }
@@ -394,44 +394,48 @@ int value1 = slope;                         // sets the integer "value1" equal t
   //int16_t sample = filter.step(recording_buf[i]);
   int16_t samplemic = recording_buf[s];
 
-unsigned long myTime;
-myTime = millis(); 
+unsigned long myTime;  // creates the long integer myTime
+myTime = millis();     // set myTime equal to the current time in milliseconds
+
   int16_t dbFS = 20*log10((abs(samplemic)+ 0.01)/32767); 
-  //Serial.println(dbFS); //Second command may be useful for displaying dBFS instead of PCM
-  // Added +0.01 to the abs value to ensure that it is never zero, even for small value. 
-  //Serial.print("; ");
+  // Serial.println(dbFS); // second command may be useful for displaying dBFS instead of PCM
+  // added +0.01 to the abs value to ensure that it is never zero, even for small value. 
+  // Serial.print("; ");
 
 
-//Power Value in Linear Scale 
-  float power = pow(10, (dbFS - (-26)) / 10.0); //Sensitivity -26 dBFS --> REFERENCE LEVEL
+// Power Value in Linear Scale 
+  float power = pow(10, (dbFS - (-26)) / 10.0); // sensitivity -26 dBFS --> REFERENCE LEVEL
   
 // Filter the value with a low-pass filter
   float filteredValuemic = (LPF_ALPHAmic * power) + ((1 - LPF_ALPHAmic) * prevValuemic);
-  prevValuemic = filteredValuemic;
+  prevValuemic = filteredValuemic; // sets prevValuemic equal to filteredValuemic
 
 
-int value = filteredValuemic;
-  if (value > UpperThresholdmic) {
-    if (BeatCompletemic) {
-      BPMmic = millis() - LastTimemic;
-      BPMmic = int(60 / (float(BPMmic) / 1000));
-      BPMTimingmic = false;
-      BeatCompletemic = false;
+int value = filteredValuemic;                       // sets the integer "value" equal to filteredValuemic
+  if (value > UpperThresholdmic) {                  // if "value" is greater than the upper threshold of 0.1...
+    
+    if (BeatCompletemic) {                          // and if BeatCompletemic is set to true...
+      BPMmic = millis() - LastTimemic;              // set "BPMmic" equal to the current time in milliseconds subtracted by the LastTimemic...
+      BPMmic = int(60 / (float(BPMmic) / 1000));    // then divide "BPMmic" by 1000 and divide 60 by that answer
+      BPMTimingmic = false;                         // set BPMTimingmic to false...
+      BeatCompletemic = false;                      // and set BeatCompletemic to false...
     }
-    if (BPMTimingmic == false) {
-      LastTimemic = millis();
-      BPMTimingmic = true;
+    
+    if (BPMTimingmic == false) {                    // if BPMTimingmic is false (which it should have been set to...)
+      LastTimemic = millis();                       // set LastTimemic equal to the current time in milliseconds...
+      BPMTimingmic = true;                          // and set BPMTimingmic to true
     }
   }
-  if ((value < LowerThresholdmic) & (BPMTimingmic))
-    BeatCompletemic = true;
+    
+  if ((value < LowerThresholdmic) & (BPMTimingmic)) // if "value" is less than the lower threshold of 0.01
+    BeatCompletemic = true;                         // set BeatCompletemic to true
 
-Serial.print(myTime);
+Serial.print(myTime);                               // TrachAlert will then print the current time...
 Serial.print(";    ");
-Serial.print(BPMmic);
+Serial.print(BPMmic);                               // the BPM as determined by the microphone...
 Serial.print(" BPM Mic");
 Serial.print(";    ");
-Serial.print(BPM);
+Serial.print(BPM);                                  // and the BPM as determined by the thermistor...
 Serial.println(" BPM Temp");
 numberbpm = BPM;
 wordbpm = String(numberbpm);
@@ -440,91 +444,74 @@ wordbpmmic = String(numberbpmmic);
 String bpm_mic = String(wordbpmmic + " BPM Mic   ");
 String bpm_temp = String(wordbpm + " BPM Temp");
 String phonedisplay = String(bpm_mic + "; " + bpm_temp);
-charac.writeValue(phonedisplay);
+charac.writeValue(phonedisplay);                          // and will relay this information to the connected bluetooth device!
 
-// check if BPMmic or BPM values exceed upper limit or drop below lower limit
-if (BPM > UpperLimit || BPM < LowerLimit) {
-  if (BPMmic > UpperLimit || BPMmic < LowerLimit) {
-    abnormalcounter = abnormalcounter - 1;
-  } else {
-    abnormalcounter = 640;
-  }  
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+// Check if microphone AND thermistor readings exceed upper limit or drop below lower limit
+if (BPM > UpperLimit || BPM < LowerLimit) {             // if the BPM from the thermistor is greater than the upper limit or less than the lower limit...
+  if (BPMmic > UpperLimit || BPMmic < LowerLimit) {     // if the BPM from the microphone is greater than the upper limit or less than the lower limit...
+    abnormalcounter = abnormalcounter - 1;              // subtract 1 from the abnormal breathing counter
+  } 
+  else { abnormalcounter = 640; }                     // otherwise, return the abnormal breathing counter to 640
 }
-else {
-  abnormalcounter = 640; // Number of abnormal readings until alert
-}
+  
+else { abnormalcounter = 640; }                       // otherwise, return the abnormal breathing counter to 640
 
-if (abnormalcounter <= 0) {
-  Serial.println("Abnormal Breathing detected");
+if (abnormalcounter <= 0) {                       // if the abnormal breathing counter is less than or equal to 0 (from 640 consecutive abnormal readings)...
+  Serial.println("Abnormal Breathing detected");  // send the user an ABNORMAL BREATHING ALERT
   String ABD = "Abnormal Breathing Detected!";
   charac.writeValue(ABD);
 }
 
-////////////////////////////////////NEW Added Code/////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////// 
+// If both microphone and thermistor yield zero readings for 10 consecutive seconds (NO BREATHING OR DEVICE MALFUNCTION)
+if ((BPM == 0 || BPM > 100) && (BPMmic == 0 || BPMmic > 100)) {  // if the BPMs from the thermistor and microphone are equal to 0 or greater than 100
+    abnormalcounter1 = abnormalcounter1 - 1;                     // subtract 1 from the (1) abnormal breathing counter
+  } else { abnormalcounter1 = 640; }                             // otherwise, return the (1) abnormal breathing counter to 640
 
-// If Both yield zero readings for 10 consecutive seconds //NO BREATHING OR DEVICE MALFUNCTION
-if ((BPM == 0 || BPM > 100) && (BPMmic == 0 || BPMmic > 100)) {
-    abnormalcounter1 = abnormalcounter1 - 1;
-  } 
-else {
-    abnormalcounter1 = 640;
-  }  
-
-if (abnormalcounter1 <= 0) {
-  Serial.println("Device Malfunction");
+if (abnormalcounter1 <= 0) {                  // if the (1) abnormal breathing counter is less than or equal to 0...
+  Serial.println("Device Malfunction");       // send the user a DEVICE MALFUNCTION ALERT
   String Malfunction = "Device Malfunction";
   charac.writeValue(Malfunction);
 }
 
-/////////////IF THERMISTOR WORKING, BUT MICROPHONE ISN'T////////////////  Abnormal Breathing
-if ((BPM > 0 || BPM < 100) && (BPMmic == 0 || BPMmic > 100)) { 
-    if (BPM > UpperLimit || BPM < LowerLimit) {
-      abnormalcounter2 = abnormalcounter2 - 1;
+// If the thermistor is working and the microphone is not (ABNORMAL BREATHING)
+if ((BPM > 0 || BPM < 100) && (BPMmic == 0 || BPMmic > 100)) {  // if the BPM from the thermistor is between 0 and 100 but the BPM from the microphone is equal to 0 or greater than 100
+    if (BPM > UpperLimit || BPM < LowerLimit) {                 // if the BPM from the thermistor is greater than the upper limit or less than the lower limit
+      abnormalcounter2 = abnormalcounter2 - 1;                  // subtract 1 from the (2) abnormal breathing counter
     } 
-    else {
-      abnormalcounter2 = 640; 
-    }  
+    else { abnormalcounter2 = 640; }                           // otherwise, return the (2) abnormal breathing counter to 640
 }
-else {
-  abnormalcounter2 = 640; // Number of abnormal readings until alert
-}
+  
+else { abnormalcounter2 = 640; }                               // otherwise, return the (2) abnormal breathing counter to 640  
 
-if (abnormalcounter2 <= 0) {
-  String bpm_mic = String("!");
-  Serial.println("Abnormal Breathing detected");
+if (abnormalcounter2 <= 0) {                      // if the (2) abnormal breathing counter is less than or equal to 0...
+  String bpm_mic = String("!");                   // set the microphone BPM string to "!"
+  Serial.println("Abnormal Breathing detected");  // and send the user an ABNORMAL BREATHING ALERT
   String ABD = "Abnormal Breathing Detected!";
   charac.writeValue(ABD);
 }
 
-/////////////IF THERMISTOR ISN'T WORKING, BUT MICROPHONE IS////////////// Abnormal Breathing
-if ((BPM == 0 || BPM > 100) && (BPMmic > 0 || BPMmic < 100)) {
-    if (BPMmic > UpperLimit || BPMmic < LowerLimit) {
-      abnormalcounter3 = abnormalcounter2 - 1;
-    } 
-    else {
-      abnormalcounter3 = 640; 
-    }  
+// If the thermistor is not working and the microphone is (ABNORMAL BREATHING)
+if ((BPM == 0 || BPM > 100) && (BPMmic > 0 || BPMmic < 100)) {  // if the BPM from the microphone is between 0 and 100 but the BPM from the thermistor is equal to 0 or greater than 100
+    if (BPMmic > UpperLimit || BPMmic < LowerLimit) {           // if the BPM from the microphone is greater than the upper limit or less than the lower limit
+      abnormalcounter3 = abnormalcounter3 - 1;                  // subtract 1 from the (3) abnormal breathing counter
+    } else { abnormalcounter3 = 640; }                          // otherwise, return the (3) abnormal breathing counter to 640
 }
-else {
-  abnormalcounter3 = 640; // Number of abnormal readings until alert
-}
+  
+else { abnormalcounter3 = 640; }                                // otherwise, return the (3) abnormal breathing counter to 640
 
-if (abnormalcounter3 <= 0) {
-  String bpm_temp = String("!");
-  Serial.println("Abnormal Breathing detected");
+if (abnormalcounter3 <= 0) {                      // if the (3) abnormal breathing counter is less than or equal to 0...
+  String bpm_temp = String("!");                  // set the thermistor BPM string to "!"
+  Serial.println("Abnormal Breathing detected");  // and send the user an ABNORMAL BREATHING ALERT
   String ABD = "Abnormal Breathing Detected!";
   charac.writeValue(ABD); 
 }
 
-/////////////         DEVICE DISLODGEMENT - BOTH SENSORS WORKING           ////////////// 10 seconds ---> 12 seconds
-if (slope < 0) { 
-      abnormalcounter4 = abnormalcounter4 - 1;
-}
-else {
-  abnormalcounter4 = 640; // Number of abnormal readings until alert
-}
+// If both sensors are working but the device has been dislodged
+if (slope < 0) {                                 // if the slope of the thermistor readings is less than 0
+      abnormalcounter4 = abnormalcounter4 - 1;   // subtract 1 from the (4) abnormal breathing counter
+} else { abnormalcounter4 = 640; }               // otherwise, return the (4) abnormal breathing counter to 640
 
 if (abnormalcounter4 <= 0) {
   Serial.println("Device Dislodgement Detected");
