@@ -470,8 +470,8 @@ if ((BPM == 0 || BPM > 100) && (BPMmic == 0 || BPMmic > 100)) {  // if the BPMs 
   } else { abnormalcounter1 = 640; }                             // otherwise, return the (1) abnormal breathing counter to 640
 
 if (abnormalcounter1 <= 0) {                  // if the (1) abnormal breathing counter is less than or equal to 0...
-  Serial.println("Device Malfunction");       // send the user a DEVICE MALFUNCTION ALERT
-  String Malfunction = "Device Malfunction";
+  Serial.println("Device Malfunction or No Breathing");       // send the user a DEVICE MALFUNCTION / NO BREATHING ALERT
+  String Malfunction = "Device Malfunction or No Breathing";
   charac.writeValue(Malfunction);
 }
 
